@@ -5,12 +5,13 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { EventsService } from './events/events.service';
 import { EventsModule } from './events/events.module';
+import { UserEntity } from './users/user.entity';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: 'sqlite',
     database: 'db.sqlite',
-    entities: [],
+    entities: [UserEntity],
     synchronize: true,
   }), UsersModule, EventsModule],
   controllers: [AppController],
