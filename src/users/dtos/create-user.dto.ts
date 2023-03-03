@@ -7,6 +7,7 @@ export class CreateUserDto {
     @IsAlpha()
     lastName: string;
 
+    @IsString()
     birthDate: string;
 
     @IsString()

@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, AfterInsert } from 'typeorm';
 
 @Entity()
 export class EventEntity {
@@ -16,4 +16,9 @@ export class EventEntity {
 
     @Column()
     createdAt: string;
+
+    @AfterInsert()
+    createdDate() {
+        this.createdAt = Date();
+    }
 }
