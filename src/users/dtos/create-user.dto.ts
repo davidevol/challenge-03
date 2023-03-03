@@ -1,19 +1,24 @@
-import { IsEmail, IsString, IsAlpha, } from 'class-validator';
+import { IsEmail, IsString, IsAlpha, IsOptional} from 'class-validator';
 
 export class CreateUserDto {
     @IsAlpha()
+    @IsOptional()
     firstName: string;
 
     @IsAlpha()
+    @IsOptional()
     lastName: string;
 
     @IsString()
+    @IsOptional()
     birthDate: string;
 
     @IsString()
+    @IsOptional()
     city: string;
 
     @IsString()
+    @IsOptional()
     country: string;
 
     @IsEmail()
@@ -23,5 +28,6 @@ export class CreateUserDto {
     password: string;
 
     @IsString()
+    @IsOptional()
     confirmPassword: string;
 }
