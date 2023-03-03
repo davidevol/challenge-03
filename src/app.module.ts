@@ -7,7 +7,12 @@ import { EventsService } from './events/events.service';
 import { EventsModule } from './events/events.module';
 
 @Module({
-  imports: [UsersModule, EventsModule],
+  imports: [TypeOrmModule.forRoot({
+    type: 'sqlite',
+    database: 'db.sqlite',
+    entities: [],
+    synchronize: true,
+  }), UsersModule, EventsModule],
   controllers: [AppController],
   providers: [AppService, EventsService],
 })
