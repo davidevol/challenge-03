@@ -4,13 +4,22 @@ import { UsersService } from './users.service';
 import { UserEntity } from './user.entity';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 
+const crypto = require('crypto');
+
 describe('AuthService', () => {
     let service: AuthService;
     let fakeUsersService: Partial<UsersService>;
 
     beforeEach(async () => {
+        const users: UserEntity[] = [];
+        let uuid = crypto.randomUUID();
         fakeUsersService = {
-            find: () => Promise.resolve([]),
+            find: (email: string) => {
+                const filteredUsers = users.filter(
+                    (user) => user.email === email,
+                );
+                return Promise.resolve(filteredUsers);
+            },
             create: (
                 firstName: string,
                 lastName: string,
@@ -20,18 +29,21 @@ describe('AuthService', () => {
                 email: string,
                 password: string,
                 confirmPassword: string,
-            ) =>
-                Promise.resolve({
-                    id: 1,
-                    email,
-                    password,
+            ) => {
+                const user = {
+                    id: parseInt(uuid),
                     firstName,
                     lastName,
                     birthDate,
                     city,
                     country,
+                    email,
+                    password,
                     confirmPassword,
-                } as UserEntity),
+                } as UserEntity;
+                users.push(user);
+                return Promise.resolve(user);
+            },
         };
 
         const module = await Test.createTestingModule({
@@ -51,21 +63,20 @@ describe('AuthService', () => {
         expect(service).toBeDefined();
     });
 
-    it('creates a new user with salt and hash password', async () => {
+    it('creates a new user with a salted and hashed password', async () => {
         const user = await service.signup(
             'NAME',
             'LAST NAME',
             '29-01-1000',
             'SP',
             'BRASIL',
-            'asfasd@email.com',
+            'test@email.com',
             'asdf',
             'asdf',
         );
 
         expect(user.password).not.toEqual('asdf');
         const [salt, hash] = user.password.split('.');
-
         expect(salt).toBeDefined();
         expect(hash).toBeDefined();
     });
@@ -82,7 +93,7 @@ describe('AuthService', () => {
                 '29-01-1000',
                 'SP',
                 'BRASIL',
-                'asfasd@email.com',
+                'test@email.com',
                 'asdf',
                 'asdf',
             ),
@@ -91,17 +102,27 @@ describe('AuthService', () => {
 
     it('throws if signin is called with an unused email', async () => {
         await expect(
-            service.signin('asfasd@email.com', 'asdf'),
+            service.signin('asdflkj@asdlfkj.com', 'passdflkj'),
         ).rejects.toThrow(NotFoundException);
     });
 
     it('throws if an invalid password is provided', async () => {
         fakeUsersService.find = () =>
             Promise.resolve([
-                { email: 'asfasd@email.com', password: 'asdf' } as UserEntity,
+                { email: 'asdf@asdf.com', password: 'laskdjf' } as UserEntity,
             ]);
         await expect(
-            service.signin('asfasd@email.com', 'asdf'),
+            service.signin('laskdjf@alskdfj.com', 'passowrd'),
+        ).rejects.toThrow(BadRequestException);
+    });
+
+    it('throws if an invalid password is provided', async () => {
+        fakeUsersService.find = () =>
+            Promise.resolve([
+                { email: 'asdf@asdf.com', password: 'laskdjf' } as UserEntity,
+            ]);
+        await expect(
+            service.signin('laskdjf@alskdfj.com', 'passowrd'),
         ).rejects.toThrow(BadRequestException);
     });
 });
