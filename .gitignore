@@ -39,3 +39,6 @@ request.http
 
 # local db
 *.sqlite
+
+# enviroment variables
+.env.*
