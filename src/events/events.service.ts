@@ -15,24 +15,6 @@ export class EventsService {
         const event = this.repo.create(eventDto);
         return this.repo.save(event);
     }
-    /* create(
-        description: string,
-        userId: string,
-        dateTime: string,
-        lat: number,
-        lng: number,
-        createdAt: string,
-    ) {
-        const event = this.repo.create({
-            description,
-            userId,
-            dateTime,
-            lat,
-            lng,
-            createdAt,
-        });
-        return this.repo.save(event);
-    } */
 
     findOne(id: number) {
         return this.repo.findOneBy({ id });
