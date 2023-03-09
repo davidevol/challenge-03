@@ -1,4 +1,10 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+    IsLatitude,
+    IsLongitude,
+    IsNumber,
+    IsOptional,
+    IsString,
+} from 'class-validator';
 
 export class CreateEventDto {
     @IsString()
@@ -9,6 +15,12 @@ export class CreateEventDto {
 
     @IsString()
     dateTime: string;
+
+    @IsLongitude()
+    lng: number;
+
+    @IsLatitude()
+    lat: number;
 
     @IsOptional()
     createdAt: string;

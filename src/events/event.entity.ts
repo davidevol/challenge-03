@@ -1,9 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
-
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class EventEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id: number;
 
     @Column()
@@ -14,6 +18,12 @@ export class EventEntity {
 
     @Column()
     dateTime: string;
+
+    @Column()
+    lng: number;
+
+    @Column()
+    lat: number;
 
     @Column()
     @CreateDateColumn()
