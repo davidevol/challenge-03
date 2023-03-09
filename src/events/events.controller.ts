@@ -8,10 +8,12 @@ import {
     Query,
     Delete,
     NotFoundException,
+    UseGuards,
 } from '@nestjs/common';
 import { CreateEventDto } from './dtos/create-event.dto';
 import { EventsService } from './events.service';
 import { UpdateEventDto } from './dtos/update-event.dto';
+import { AuthGuard } from '../guards/auth.guard';
 
 @Controller('events')
 export class EventsController {
@@ -33,13 +35,9 @@ export class EventsController {
     }
 
     @Post()
+    @UseGuards(AuthGuard)
     createEvent(@Body() body: CreateEventDto) {
-        this.eventsService.create(
-            body.description,
-            body.userId,
-            body.dateTime,
-            body.createdAt,
-        );
+        return this.eventsService.create(body);
     }
 
     @Get('/:id')
