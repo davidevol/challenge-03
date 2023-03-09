@@ -24,7 +24,7 @@ describe('Authentication System', () => {
                 birthDate: '20-02-2000',
                 city: 'SP',
                 country: 'Brazil',
-                email: 'user@email200.io',
+                email: 'user@email2023.io',
                 password: 'user@11111',
                 confirmPassword: 'user@11111',
             })
@@ -32,5 +32,23 @@ describe('Authentication System', () => {
         const { id, email } = res.body;
         expect(id).toBeDefined();
         expect(email).toEqual(email);
+    });
+
+    it('signup as a new user then get the currently logged in user', async () => {
+        const email = 'user@email2023.io';
+
+        const res = await request(app.getHttpServer())
+            .post('/users/signin')
+            .send({ email, password: 'user@11111' })
+            .expect(201);
+
+        const cookie = res.get('Set-Cookie');
+
+        const { body } = await request(app.getHttpServer())
+            .get('/users/me')
+            .set('Cookie', cookie)
+            .expect(200);
+
+        expect(body.email).toEqual(email);
     });
 });
