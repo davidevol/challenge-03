@@ -38,4 +38,4 @@ lerna-debug.log*
 request.http
 
 # local db
-db.sqlite
+*.sqlite
