@@ -5,7 +5,6 @@ import {
     Column,
     PrimaryGeneratedColumn,
     CreateDateColumn,
-    ManyToMany,
     ManyToOne,
 } from 'typeorm';
 
