@@ -19,9 +19,6 @@ import { UserEntity } from '../users/user.entity';
 import { EventDto } from './dtos/event.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 
-
-
-
 @Controller('events')
 export class EventsController {
     constructor(private eventsService: EventsService) {}
@@ -37,21 +34,20 @@ export class EventsController {
     findAllEvents(@Query('id') id: string) {
         return this.eventsService.find(id);
     }
-    
+
     @Delete('/:id')
-    removeEvent(@Param('id') id: string) {
-        return this.eventsService.remove(parseInt(id));
-    }
-    
-    @Patch('/:id')
-    updateEvent(@Param('id') id: string, @Body() body: UpdateEventDto) {
-        return this.eventsService.update(parseInt(id), body);
+    removeEvent(@Param('id') id: number) {
+        return this.eventsService.remove(id);
     }
 
+    @Patch('/:id')
+    updateEvent(@Param('id') id: number, @Body() body: UpdateEventDto) {
+        return this.eventsService.update(id, body);
+    }
 
     @Get('/:id')
-    async findEvent(@Param('id') id: string) {
-        const event = await this.eventsService.findOne(parseInt(id));
+    async findEvent(@Param('id') id: number) {
+        const event = await this.eventsService.findOne(id);
 
         if (!event) {
             throw new NotFoundException('this event not exist');
