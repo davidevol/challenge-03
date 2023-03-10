@@ -11,6 +11,7 @@ export class CreateEventDto {
     description: string;
 
     @IsNumber()
+    @IsOptional()
     userId: string;
 
     @IsString()

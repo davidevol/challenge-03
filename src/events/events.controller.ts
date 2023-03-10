@@ -14,6 +14,9 @@ import { CreateEventDto } from './dtos/create-event.dto';
 import { EventsService } from './events.service';
 import { UpdateEventDto } from './dtos/update-event.dto';
 import { AuthGuard } from '../guards/auth.guard';
+import { CurrentUser } from '../users/decorators/current-user.decorator';
+import { UserEntity } from '../users/user.entity';
+
 
 @Controller('events')
 export class EventsController {
@@ -36,8 +39,8 @@ export class EventsController {
 
     @Post()
     @UseGuards(AuthGuard)
-    createEvent(@Body() body: CreateEventDto) {
-        return this.eventsService.create(body);
+    createEvent(@Body() body: CreateEventDto, @CurrentUser() user: UserEntity) {
+        return this.eventsService.create(body, user);
     }
 
     @Get('/:id')

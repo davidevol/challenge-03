@@ -1,8 +1,12 @@
+import { userInfo } from 'os';
+import { UserEntity } from 'src/users/user.entity';
 import {
     Entity,
     Column,
     PrimaryGeneratedColumn,
     CreateDateColumn,
+    ManyToMany,
+    ManyToOne,
 } from 'typeorm';
 
 @Entity()
@@ -28,4 +32,7 @@ export class EventEntity {
     @Column()
     @CreateDateColumn()
     createdAt: string;
+
+    @ManyToOne(() => UserEntity, (user) => user.events)
+    user: UserEntity;
 }

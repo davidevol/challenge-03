@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { EventEntity } from 'src/events/event.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 
 @Entity()
@@ -29,4 +30,7 @@ export class UserEntity {
 
     @Column()
     confirmPassword: string;
+
+    @OneToMany(() => EventEntity, (event) => event.userId)
+    events: EventEntity[];
 }
