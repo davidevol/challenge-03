@@ -1,9 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
-
+import { userInfo } from 'os';
+import { UserEntity } from 'src/users/user.entity';
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    ManyToOne,
+} from 'typeorm';
 
 @Entity()
 export class EventEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id: number;
 
     @Column()
@@ -16,6 +23,15 @@ export class EventEntity {
     dateTime: string;
 
     @Column()
+    lng: number;
+
+    @Column()
+    lat: number;
+
+    @Column()
     @CreateDateColumn()
     createdAt: string;
+
+    @ManyToOne(() => UserEntity, (user) => user.events)
+    user: UserEntity;
 }

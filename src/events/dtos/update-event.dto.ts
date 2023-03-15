@@ -1,4 +1,10 @@
-import { IsString, IsOptional, IsNumber } from 'class-validator';
+import {
+    IsString,
+    IsOptional,
+    IsNumber,
+    IsLongitude,
+    IsLatitude,
+} from 'class-validator';
 
 export class UpdateEventDto {
     @IsString()
@@ -8,6 +14,16 @@ export class UpdateEventDto {
     @IsNumber()
     @IsOptional()
     userId: string;
+
+    @IsNumber()
+    @IsOptional()
+    @IsLongitude()
+    lng: number;
+
+    @IsNumber()
+    @IsOptional()
+    @IsLatitude()
+    lat: number;
 
     @IsString()
     @IsOptional()

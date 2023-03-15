@@ -2,6 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { EventEntity } from './event.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateEventDto } from './dtos/create-event.dto';
+import { UserEntity } from '../users/user.entity';
 
 @Injectable()
 export class EventsService {
@@ -10,18 +12,9 @@ export class EventsService {
         private repo: Repository<EventEntity>,
     ) {}
 
-    create(
-        description: string,
-        userId: string,
-        dateTime: string,
-        createdAt: string,
-    ) {
-        const event = this.repo.create({
-            description,
-            userId,
-            dateTime,
-            createdAt,
-        });
+    create(eventDto: CreateEventDto, user: UserEntity) {
+        const event = this.repo.create(eventDto);
+        event.user = user
         return this.repo.save(event);
     }
 
